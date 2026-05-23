@@ -251,28 +251,22 @@ body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:1
 
   <!-- QUEM ESTÁ INDICANDO -->
   <div class="section-title">👤 Quem está indicando?</div>
-  <div class="section-sub">Preencha seus dados para registrarmos a indicação e enviarmos uma cópia para você.</div>
+  <div class="section-sub">Preencha seu nome para que possamos registrar sua indicação corretamente.</div>
 
   <div class="field field-destaque">
     <label>Seu nome completo <span class="req">*</span></label>
     <input type="text" id="f-indicador" placeholder="Ex: Carlos Alberto Souza" autocomplete="name">
   </div>
 
-  <div class="field field-destaque">
-    <label>Seu WhatsApp <span class="req">*</span></label>
-    <input type="tel" id="f-tel-indicador" placeholder="(31) 9 0000-0000" autocomplete="tel">
-    <div class="hint">📲 Você vai receber uma cópia da indicação no seu WhatsApp</div>
-  </div>
-
   <div class="divider"></div>
 
   <!-- DADOS DO INDICADO -->
-  <div class="section-title">👨‍👩‍👧 Dados do Passageiro / Família</div>
+  <div class="section-title">👨‍👩‍👧 Dados do Aluno / Família</div>
   <div class="section-sub">Preencha o que souber. Nossa equipe entra em contato para completar as informações.</div>
 
   <div class="field">
-    <label>Nome do passageiro <span class="req">*</span></label>
-    <input type="text" id="f-passageiro" placeholder="Nome nome completo">
+    <label>Nome do aluno <span class="req">*</span></label>
+    <input type="text" id="f-aluno" placeholder="Nome da criança ou jovem">
   </div>
 
   <div class="grid2">
@@ -315,13 +309,13 @@ body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:1
 
   <div class="divider"></div>
 
-  <!-- CONTATO DO RESPONSÁVEL -->
-  <div class="section-title">📞 Contato do Responsável</div>
-  <div class="section-sub">Dados de quem podemos contatar sobre o serviço.</div>
+  <!-- CONTATO DA FAMÍLIA -->
+  <div class="section-title">📞 Contato da Família</div>
+  <div class="section-sub">Quem podemos chamar para conversar sobre o serviço?</div>
 
   <div class="field">
     <label>Nome do responsável <span class="req">*</span></label>
-    <input type="text" id="f-resp" placeholder="Nome do responsável">
+    <input type="text" id="f-resp" placeholder="Mãe, pai, avó, responsável...">
   </div>
 
   <div class="field">
@@ -410,7 +404,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:1
 <!-- FOOTER -->
 <div class="footer">
   ♿ <strong>Minas + Acessível Ltda</strong><br>
-  Belo Horizonte, MG<br>
+  Credenciada SMED · Belo Horizonte, MG<br>
   Dúvidas? Fale com a Bruna pelo WhatsApp
 </div>
 
@@ -464,8 +458,7 @@ function selUrg(el){
 function validar(){
   const campos = [
     {id:'f-indicador', msg:'⚠️ Digite seu nome para identificar a indicação'},
-    {id:'f-tel-indicador', msg:'⚠️ Digite seu WhatsApp para receber a cópia'},
-    {id:'f-passageiro',     msg:'⚠️ Digite o nome do passageiro'},
+    {id:'f-aluno',     msg:'⚠️ Digite o nome do aluno'},
     {id:'f-resp',      msg:'⚠️ Digite o nome do responsável'},
     {id:'f-tel',       msg:'⚠️ Digite o WhatsApp da família'},
   ];
@@ -491,23 +484,21 @@ function enviarIndicacao(){
   btn.innerHTML = '<span>⏳ Abrindo WhatsApp...</span>';
 
   const protocolo = 'IND-' + Date.now();
-  const telIndicador = g('f-tel-indicador').replace(/\D/g,'');
   const indicacao = {
-    id:            protocolo,
-    data:          new Date().toLocaleString('pt-BR'),
-    indicador:     g('f-indicador'),
-    telIndicador:  telIndicador,
-    passageiro:         g('f-passageiro'),
-    idade:         g('f-idade')  || '—',
-    turno:         g('f-turno')  || '—',
-    escola:        g('f-escola') || '—',
-    condicao:      g('f-cond')   || '—',
-    responsavel:   g('f-resp'),
-    whatsapp:      g('f-tel'),
-    bairro:        g('f-bairro') || '—',
-    tipo:          tipoLabel[tipoSel],
-    urgencia:      urgLabel[urgSel],
-    obs:           g('f-obs')    || '—',
+    id:          protocolo,
+    data:        new Date().toLocaleString('pt-BR'),
+    indicador:   g('f-indicador'),
+    aluno:       g('f-aluno'),
+    idade:       g('f-idade')  || '—',
+    turno:       g('f-turno')  || '—',
+    escola:      g('f-escola') || '—',
+    condicao:    g('f-cond')   || '—',
+    responsavel: g('f-resp'),
+    whatsapp:    g('f-tel'),
+    bairro:      g('f-bairro') || '—',
+    tipo:        tipoLabel[tipoSel],
+    urgencia:    urgLabel[urgSel],
+    obs:         g('f-obs')    || '—',
   };
 
   // Salva localmente
@@ -515,23 +506,23 @@ function enviarIndicacao(){
   salvas.push(indicacao);
   localStorage.setItem('indicacoes_minas', JSON.stringify(salvas));
 
-  // ── Mensagem para a BRUNA (completa) ──
-  const msgBruna = encodeURIComponent(
+  // Monta mensagem WhatsApp
+  const msg = encodeURIComponent(
     '♿ *MINAS + ACESSÍVEL — Nova Indicação* ⭐\n\n'
   + '📋 *Protocolo:* ' + indicacao.id + '\n'
   + '📅 *Data/Hora:* ' + indicacao.data + '\n'
-  + '👤 *Indicado por:* ' + indicacao.indicador + ' · ' + g('f-tel-indicador') + '\n\n'
+  + '👤 *Indicado por:* ' + indicacao.indicador + '\n\n'
   + '━━━━━━━━━━━━━━━━━━━\n'
-  + '👦 *DADOS DO PASSAGEIRO*\n'
+  + '👦 *DADOS DO ALUNO*\n'
   + '━━━━━━━━━━━━━━━━━━━\n'
-  + '• Nome: *' + indicacao.passageiro + '*\n'
+  + '• Nome: *' + indicacao.aluno + '*\n'
   + '• Idade: ' + indicacao.idade + '\n'
   + '• Condição: ' + indicacao.condicao + '\n'
   + '• Instituição: ' + indicacao.escola + '\n'
   + '• Turno: ' + indicacao.turno + '\n'
   + '• Bairro: ' + indicacao.bairro + '\n\n'
   + '━━━━━━━━━━━━━━━━━━━\n'
-  + '📞 *CONTATO DO RESPONSÁVEL*\n'
+  + '📞 *CONTATO DA FAMÍLIA*\n'
   + '━━━━━━━━━━━━━━━━━━━\n'
   + '• Responsável: *' + indicacao.responsavel + '*\n'
   + '• WhatsApp: *' + indicacao.whatsapp + '*\n\n'
@@ -544,42 +535,8 @@ function enviarIndicacao(){
   + '_Enviado pelo Programa de Indicação · Minas + Acessível_'
   );
 
-  // ── Mensagem para o MOTORISTA (comprovante) ──
-  const msgMotorista = encodeURIComponent(
-    '✅ *Sua indicação foi enviada!* ⭐\n\n'
-  + '♿ *Minas + Acessível — Comprovante*\n\n'
-  + '📋 *Protocolo:* ' + indicacao.id + '\n'
-  + '📅 *Data/Hora:* ' + indicacao.data + '\n\n'
-  + '━━━━━━━━━━━━━━━━━━━\n'
-  + '👦 *PASSAGEIRO INDICADO*\n'
-  + '━━━━━━━━━━━━━━━━━━━\n'
-  + '• Nome: *' + indicacao.passageiro + '*\n'
-  + '• Responsável: ' + indicacao.responsavel + '\n'
-  + '• WhatsApp: ' + indicacao.whatsapp + '\n'
-  + '• Bairro: ' + indicacao.bairro + '\n\n'
-  + '━━━━━━━━━━━━━━━━━━━\n'
-  + '📌 *SERVIÇO*\n'
-  + '━━━━━━━━━━━━━━━━━━━\n'
-  + '• Tipo: ' + indicacao.tipo + '\n'
-  + '• Urgência: ' + indicacao.urgencia + '\n\n'
-  + '🙏 Obrigada pela indicação, *' + indicacao.indicador + '*!\n'
-  + 'Nossa equipe vai entrar em contato com a família em breve.\n\n'
-  + '_Minas + Acessível · Transporte Adaptado · BH_'
-  );
-
-  // Abre WhatsApp da Bruna, depois o do motorista
   setTimeout(()=>{
-    // 1º — WhatsApp da Bruna
-    window.open('https://wa.me/' + WHATSAPP_NUMERO + '?text=' + msgBruna, '_blank');
-
-    // 2º — WhatsApp do motorista (300ms depois para não bloquear popup)
-    if(telIndicador.length >= 10){
-      const numMot = '55' + telIndicador;
-      setTimeout(()=>{
-        window.open('https://wa.me/' + numMot + '?text=' + msgMotorista, '_blank');
-      }, 300);
-    }
-
+    window.open('https://wa.me/' + WHATSAPP_NUMERO + '?text=' + msg, '_blank');
     mostrarSucesso(indicacao);
   }, 700);
 }
@@ -592,58 +549,5 @@ function mostrarSucesso(ind){
 
   document.getElementById('success-resumo').innerHTML = `
     <div class="sc-row"><span class="sc-key">Indicado por</span><span class="sc-val">${ind.indicador}</span></div>
-    <div class="sc-row"><span class="sc-key">Passageiro</span><span class="sc-val">${ind.passageiro}</span></div>
-    <div class="sc-row"><span class="sc-key">Responsável</span><span class="sc-val">${ind.responsavel}</span></div>
-    <div class="sc-row"><span class="sc-key">WhatsApp</span><span class="sc-val">${ind.whatsapp}</span></div>
-    <div class="sc-row"><span class="sc-key">Tipo</span><span class="sc-val">${ind.tipo}</span></div>
-    <div class="sc-row"><span class="sc-key">Urgência</span><span class="sc-val">${ind.urgencia}</span></div>
-    <div class="sc-row"><span class="sc-key">Protocolo</span><span class="sc-val" style="font-family:var(--mono);font-size:11px;">${ind.id}</span></div>
-  `;
-
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-// ── NOVA INDICAÇÃO ──
-function novaIndicacao(){
-  ['f-indicador','f-tel-indicador','f-passageiro','f-resp','f-tel','f-escola','f-bairro','f-obs'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.value = '';
-  });
-  document.getElementById('f-idade').value = '';
-  document.getElementById('f-turno').value = '';
-  document.getElementById('f-cond').value  = '';
-
-  // Reset tipo e urgência
-  document.querySelectorAll('.tipo-btn').forEach(b=>b.classList.remove('sel'));
-  document.querySelector('[data-tipo="regular"]').classList.add('sel');
-  tipoSel = 'regular';
-
-  document.querySelectorAll('.urg-btn').forEach(b=>b.classList.remove('sel','verde','amarelo','cinza'));
-  document.querySelector('[data-urg="agora"]').classList.add('sel','verde');
-  urgSel = 'agora';
-
-  document.getElementById('success').style.display = 'none';
-  document.getElementById('formArea').style.display = 'block';
-
-  const btn = document.getElementById('btnSubmit');
-  btn.disabled = false;
-  btn.innerHTML = '<span>📲 Enviar Indicação pelo WhatsApp</span>';
-
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-// ── MÁSCARAS DE TELEFONE ──
-function mascaraTel(el){
-  el.addEventListener('input', function(){
-    let v = this.value.replace(/\D/g,'');
-    if(v.length > 11) v = v.slice(0,11);
-    if(v.length > 6)      this.value = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
-    else if(v.length > 2) this.value = '(' + v.slice(0,2) + ') ' + v.slice(2);
-    else if(v.length > 0) this.value = '(' + v;
-  });
-}
-mascaraTel(document.getElementById('f-tel'));
-mascaraTel(document.getElementById('f-tel-indicador'));
-</script>
-</body>
-</html>
+    <div class="sc-row"><span class="sc-key">Aluno</span><span class="sc-val">${ind.aluno}</span></div>
+    <div class="sc-row"><span class="sc-key">Responsável</span
