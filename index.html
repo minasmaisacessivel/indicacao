@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a3d7a">
+<title>Programa de Indicação · Minas + Acessível</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1a3d7a; --blue2:#2558b0;
+  --orange:#e07b20; --orange2:#f5922a;
+  --green:#17a84a; --green2:#20c45a;
+  --bg:#f0f4fb; --border:#dce8f5;
+  --text:#0d1a2e; --muted:#607090;
+  --shadow:0 4px 20px rgba(10,31,61,.12);
+  --shadow-lg:0 12px 40px rgba(10,31,61,.2);
+  --head:'Syne',sans-serif; --body:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(160deg,#050f1f 0%,#0a1f3d 45%,var(--blue) 100%);
+  padding:44px 24px 52px;
+  position:relative;overflow:hidden;text-align:center;
+}
+.hero::before{
+  content:'';position:absolute;
+  width:480px;height:480px;border-radius:50%;
+  background:radial-gradient(circle,rgba(224,123,32,.18) 0%,transparent 70%);
+  top:-200px;right:-150px;pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;
+  width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(26,61,122,.4) 0%,transparent 70%);
+  bottom:-100px;left:-80px;pointer-events:none;
+}
+.hero-inner{position:relative;z-index:1;}
+.prog-label{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(224,123,32,.22);border:1px solid rgba(224,123,32,.45);
+  padding:7px 18px;border-radius:24px;
+  font-family:var(--head);font-size:11px;font-weight:700;
+  color:var(--orange2);letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:16px;
+  animation:glow 2.5s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(224,123,32,.25)}50%{box-shadow:0 0 22px rgba(224,123,32,.55)}}
+.hero-title{
+  font-family:var(--head);font-size:38px;font-weight:800;
+  color:white;line-height:1.05;margin-bottom:8px;
+}
+.hero-title em{color:var(--orange2);font-style:normal;}
+.hero-prog{
+  font-family:var(--head);font-size:15px;font-weight:700;
+  color:rgba(255,255,255,.75);letter-spacing:.5px;margin-bottom:10px;
+}
+.hero-sub{
+  font-size:13px;color:rgba(255,255,255,.6);
+  line-height:1.7;max-width:340px;margin:0 auto 22px;
+}
+.hero-pills{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;}
+.pill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);
+  padding:5px 13px;border-radius:20px;font-size:11px;
+  color:rgba(255,255,255,.85);font-weight:600;
+}
+
+/* ── FORM CONTAINER ── */
+.form-wrap{padding:24px;max-width:560px;margin:0 auto;}
+
+.section-title{
+  font-family:var(--head);font-size:17px;font-weight:800;
+  color:var(--blue);margin-bottom:4px;margin-top:6px;
+}
+.section-sub{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5;}
+
+.field{margin-bottom:14px;}
+.field label{
+  display:block;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.9px;
+  color:var(--muted);margin-bottom:6px;
+}
+.field label .req{color:var(--orange);margin-left:2px;}
+.field input,.field select,.field textarea{
+  width:100%;padding:14px 15px;
+  border:1.5px solid var(--border);border-radius:12px;
+  font-size:15px;font-family:var(--body);color:var(--text);
+  background:white;outline:none;
+  transition:border .2s,box-shadow .2s;
+  -webkit-appearance:none;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(224,123,32,.12);
+}
+.field input.error{border-color:#e02020;box-shadow:0 0 0 3px rgba(224,32,32,.1);}
+.field textarea{resize:vertical;min-height:90px;line-height:1.5;}
+.field .hint{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.4;}
+
+/* campo destaque — nome do indicador */
+.field-destaque input{
+  border-color:var(--orange);background:#fffaf5;
+  font-size:16px;font-weight:600;
+}
+.field-destaque input:focus{
+  border-color:var(--orange2);
+  box-shadow:0 0 0 4px rgba(224,123,32,.15);
+}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* tipo de serviço */
+.tipo-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:6px;}
+.tipo-btn{
+  border:2px solid var(--border);border-radius:12px;
+  padding:13px 8px;text-align:center;cursor:pointer;
+  transition:all .18s;background:var(--bg);
+}
+.tipo-btn.sel{border-color:var(--blue);background:#e8f0fb;}
+.tipo-btn .ti{font-size:22px;margin-bottom:4px;}
+.tipo-btn .tn{font-size:11px;font-weight:700;color:var(--text);}
+.tipo-btn .ts{font-size:10px;color:var(--muted);margin-top:1px;}
+.tipo-btn.sel .tn{color:var(--blue);}
+
+/* urgência */
+.urg-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.urg-btn{
+  flex:1;min-width:80px;padding:11px 8px;text-align:center;
+  border:2px solid var(--border);border-radius:10px;cursor:pointer;
+  transition:all .18s;background:var(--bg);
+  font-size:12px;font-weight:700;color:var(--muted);line-height:1.4;
+}
+.urg-btn.sel.verde{border-color:var(--green);background:#e6f9ee;color:var(--green);}
+.urg-btn.sel.amarelo{border-color:#d4900a;background:#fef6e0;color:#d4900a;}
+.urg-btn.sel.cinza{border-color:var(--muted);background:#f0f4fb;color:var(--muted);}
+
+/* divider */
+.divider{height:1px;background:var(--border);margin:22px 0;}
+
+/* submit */
+.btn-submit{
+  width:100%;padding:18px;
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  color:white;border:none;border-radius:14px;
+  font-size:17px;font-weight:800;cursor:pointer;
+  font-family:var(--head);letter-spacing:.3px;
+  box-shadow:0 6px 22px rgba(224,123,32,.35);
+  transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-bottom:10px;
+}
+.btn-submit:active{transform:scale(.97);}
+.btn-submit:disabled{opacity:.55;cursor:not-allowed;transform:none;}
+.btn-hint{font-size:11px;color:var(--muted);text-align:center;line-height:1.5;}
+
+/* ── TELA DE SUCESSO ── */
+#success{
+  display:none;padding:48px 24px;text-align:center;
+  flex-direction:column;align-items:center;
+}
+.success-icon{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),var(--green2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;margin:0 auto 20px;
+  box-shadow:0 8px 28px rgba(23,168,74,.35);
+  animation:pop .4s cubic-bezier(.18,.89,.32,1.28);
+}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.success-title{font-family:var(--head);font-size:26px;font-weight:800;color:var(--blue);margin-bottom:8px;}
+.success-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:22px;max-width:320px;}
+.success-card{
+  background:white;border-radius:16px;padding:18px;width:100%;max-width:420px;
+  box-shadow:var(--shadow);border:1.5px solid var(--border);
+  text-align:left;margin-bottom:20px;
+}
+.sc-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;gap:10px;}
+.sc-row:last-child{border-bottom:none;}
+.sc-key{color:var(--muted);flex-shrink:0;}
+.sc-val{font-weight:700;text-align:right;}
+.btn-nova{
+  width:100%;max-width:420px;padding:15px;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:white;border:none;border-radius:13px;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:var(--head);
+}
+.btn-nova:active{transform:scale(.97);}
+
+/* toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:var(--text);color:white;
+  padding:12px 22px;border-radius:13px;
+  font-size:13px;font-weight:600;z-index:999;
+  white-space:nowrap;box-shadow:var(--shadow-lg);
+  transition:transform .3s,opacity .3s;opacity:0;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+/* footer */
+.footer{
+  padding:20px 24px 32px;text-align:center;
+  font-size:11px;color:var(--muted);line-height:1.7;
+}
+
+/* animações de entrada */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.form-wrap > *{animation:fadeInUp .35s ease both;}
+.form-wrap > *:nth-child(1){animation-delay:.05s}
+.form-wrap > *:nth-child(2){animation-delay:.1s}
+.form-wrap > *:nth-child(3){animation-delay:.15s}
+.form-wrap > *:nth-child(4){animation-delay:.2s}
+.form-wrap > *:nth-child(5){animation-delay:.25s}
+.form-wrap > *:nth-child(6){animation-delay:.3s}
+.form-wrap > *:nth-child(7){animation-delay:.35s}
+
+@media(max-width:400px){
+  .hero-title{font-size:30px;}
+  .grid2,.tipo-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="prog-label">⭐ Programa de Indicação</div>
+    <div class="hero-title">Minas <em>+</em> Acessível</div>
+    <div class="hero-prog">Indique e faça a diferença!</div>
+    <div class="hero-sub">Você conhece alguém que precisa de transporte acessível? Preencha o formulário e a nossa equipe entra em contato.</div>
+    <div class="hero-pills">
+      <span class="pill">♿ Transporte Adaptado</span>
+      <span class="pill">🤝 Indicação Simples</span>
+      <span class="pill">📲 Resposta Rápida</span>
+    </div>
+  </div>
+</div>
+
+<!-- FORMULÁRIO -->
+<div id="formArea">
+<div class="form-wrap">
+
+  <!-- QUEM ESTÁ INDICANDO -->
+  <div class="section-title">👤 Quem está indicando?</div>
+  <div class="section-sub">Preencha seus dados para registrarmos a indicação e enviarmos uma cópia para você.</div>
+
+  <div class="field field-destaque">
+    <label>Seu nome completo <span class="req">*</span></label>
+    <input type="text" id="f-indicador" placeholder="Ex: Carlos Alberto Souza" autocomplete="name">
+  </div>
+
+  <div class="field field-destaque">
+    <label>Seu WhatsApp <span class="req">*</span></label>
+    <input type="tel" id="f-tel-indicador" placeholder="(31) 9 0000-0000" autocomplete="tel">
+    <div class="hint">📲 Você vai receber uma cópia da indicação no seu WhatsApp</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DADOS DO INDICADO -->
+  <div class="section-title">👨‍👩‍👧 Dados do Passageiro / Família</div>
+  <div class="section-sub">Preencha o que souber. Nossa equipe entra em contato para completar as informações.</div>
+
+  <div class="field">
+    <label>Nome do passageiro <span class="req">*</span></label>
+    <input type="text" id="f-passageiro" placeholder="Nome nome completo">
+  </div>
+
+  <div class="grid2">
+    <div class="field">
+      <label>Idade</label>
+      <input type="number" id="f-idade" placeholder="Ex: 8" min="1" max="30">
+    </div>
+    <div class="field">
+      <label>Turno</label>
+      <select id="f-turno">
+        <option value="">Selecione</option>
+        <option>Manhã</option>
+        <option>Tarde</option>
+        <option>Integral</option>
+        <option>Não sei</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Escola ou instituição</label>
+    <input type="text" id="f-escola" placeholder="Nome da escola, clínica ou instituição">
+  </div>
+
+  <div class="field">
+    <label>Condição / necessidade especial</label>
+    <select id="f-cond">
+      <option value="">Selecione ou deixe em branco</option>
+      <option>Cadeirante</option>
+      <option>Mobilidade Reduzida</option>
+      <option>Deficiência Visual</option>
+      <option>Deficiência Auditiva</option>
+      <option>Autismo</option>
+      <option>Paralisia Cerebral</option>
+      <option>Síndrome de Down</option>
+      <option>Outra</option>
+      <option>Não sei informar</option>
+    </select>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CONTATO DO RESPONSÁVEL -->
+  <div class="section-title">📞 Contato do Responsável</div>
+  <div class="section-sub">Dados de quem podemos contatar sobre o serviço.</div>
+
+  <div class="field">
+    <label>Nome do responsável <span class="req">*</span></label>
+    <input type="text" id="f-resp" placeholder="Nome do responsável">
+  </div>
+
+  <div class="field">
+    <label>WhatsApp <span class="req">*</span></label>
+    <input type="tel" id="f-tel" placeholder="(31) 9 0000-0000">
+    <div class="hint">📲 Nossa equipe vai entrar em contato diretamente por aqui</div>
+  </div>
+
+  <div class="field">
+    <label>Bairro / Região</label>
+    <input type="text" id="f-bairro" placeholder="Ex: Venda Nova, Pampulha, Barreiro...">
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TIPO DE SERVIÇO -->
+  <div class="section-title">🏷️ Tipo de serviço</div>
+  <div class="section-sub">O que a família precisa?</div>
+
+  <div class="tipo-grid" id="tipoGrid">
+    <div class="tipo-btn sel" data-tipo="regular" onclick="selTipo(this)">
+      <div class="ti">🔄</div>
+      <div class="tn">Transporte Regular</div>
+      <div class="ts">Diário, ida e volta</div>
+    </div>
+    <div class="tipo-btn" data-tipo="saude" onclick="selTipo(this)">
+      <div class="ti">🏥</div>
+      <div class="tn">Saúde / Clínica</div>
+      <div class="ts">Consultas e terapias</div>
+    </div>
+    <div class="tipo-btn" data-tipo="eventual" onclick="selTipo(this)">
+      <div class="ti">📅</div>
+      <div class="tn">Eventual</div>
+      <div class="ts">Quando precisar</div>
+    </div>
+    <div class="tipo-btn" data-tipo="outro" onclick="selTipo(this)">
+      <div class="ti">❓</div>
+      <div class="tn">Outro</div>
+      <div class="ts">A família explica</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- URGÊNCIA -->
+  <div class="section-title">⏰ Urgência</div>
+  <div class="section-sub">Quando a família precisa do serviço?</div>
+
+  <div class="urg-row">
+    <div class="urg-btn sel verde" data-urg="agora" onclick="selUrg(this)">🔥 Urgente<br><span style="font-size:10px;font-weight:400">Esta semana</span></div>
+    <div class="urg-btn" data-urg="breve" onclick="selUrg(this)">📅 Em breve<br><span style="font-size:10px;font-weight:400">Este mês</span></div>
+    <div class="urg-btn" data-urg="pesquisando" onclick="selUrg(this)">🔍 Pesquisando<br><span style="font-size:10px;font-weight:400">Sem pressa</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- OBSERVAÇÕES -->
+  <div class="section-title">💬 Observações</div>
+  <div class="field">
+    <label>Alguma informação adicional?</label>
+    <textarea id="f-obs" placeholder="Ex: A mãe prefere ser contactada à tarde, a criança usa cadeira de rodas motorizada, mora no fundo do beco..."></textarea>
+    <div class="hint">Quanto mais detalhe, mais rápido conseguimos ajudar a família.</div>
+  </div>
+
+  <!-- SUBMIT -->
+  <button class="btn-submit" id="btnSubmit" onclick="enviarIndicacao()">
+    <span>📲 Enviar Indicação pelo WhatsApp</span>
+  </button>
+  <p class="btn-hint">Ao clicar, o WhatsApp vai abrir com todas as informações já preenchidas. Só confirmar o envio! ✅</p>
+
+</div>
+</div>
+
+<!-- TELA DE SUCESSO -->
+<div id="success">
+  <div class="success-icon">✅</div>
+  <div class="success-title">Indicação enviada!</div>
+  <div class="success-sub">Ótimo! A equipe da Minas + Acessível já recebeu e vai entrar em contato com a família em breve.</div>
+  <div class="success-card" id="success-resumo"></div>
+  <button class="btn-nova" onclick="novaIndicacao()">⭐ Fazer outra indicação</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<div class="footer">
+  ♿ <strong>Minas + Acessível Ltda</strong><br>
+  Belo Horizonte, MG<br>
+  Dúvidas? Fale com a Bruna pelo WhatsApp
+</div>
+
+<script>
+// ── ESTADO ──
+let tipoSel = 'regular';
+let urgSel  = 'agora';
+
+const WHATSAPP_NUMERO = '5531996124780';
+
+const tipoLabel = {
+  regular:  '🔄 Transporte Regular',
+  saude:    '🏥 Saúde / Clínica',
+  eventual: '📅 Eventual',
+  outro:    '❓ Outro'
+};
+const urgLabel = {
+  agora:       '🔥 Urgente (esta semana)',
+  breve:       '📅 Em breve (este mês)',
+  pesquisando: '🔍 Pesquisando'
+};
+
+// ── HELPERS ──
+function g(id){ return (document.getElementById(id)||{}).value?.trim()||''; }
+
+function showToast(msg, dur=3000){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+// ── TIPO ──
+function selTipo(el){
+  tipoSel = el.dataset.tipo;
+  document.querySelectorAll('.tipo-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ── URGÊNCIA ──
+function selUrg(el){
+  urgSel = el.dataset.urg;
+  document.querySelectorAll('.urg-btn').forEach(b=>b.classList.remove('sel','verde','amarelo','cinza'));
+  el.classList.add('sel');
+  if(urgSel==='agora')       el.classList.add('verde');
+  else if(urgSel==='breve')  el.classList.add('amarelo');
+  else                       el.classList.add('cinza');
+}
+
+// ── VALIDAÇÃO ──
+function validar(){
+  const campos = [
+    {id:'f-indicador', msg:'⚠️ Digite seu nome para identificar a indicação'},
+    {id:'f-tel-indicador', msg:'⚠️ Digite seu WhatsApp para receber a cópia'},
+    {id:'f-passageiro',     msg:'⚠️ Digite o nome do passageiro'},
+    {id:'f-resp',      msg:'⚠️ Digite o nome do responsável'},
+    {id:'f-tel',       msg:'⚠️ Digite o WhatsApp da família'},
+  ];
+  for(const c of campos){
+    const el = document.getElementById(c.id);
+    if(!el.value.trim()){
+      el.classList.add('error');
+      el.focus();
+      showToast(c.msg);
+      setTimeout(()=>el.classList.remove('error'), 2500);
+      return false;
+    }
+  }
+  return true;
+}
+
+// ── ENVIAR VIA WHATSAPP ──
+function enviarIndicacao(){
+  if(!validar()) return;
+
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.innerHTML = '<span>⏳ Abrindo WhatsApp...</span>';
+
+  const protocolo = 'IND-' + Date.now();
+  const telIndicador = g('f-tel-indicador').replace(/\D/g,'');
+  const indicacao = {
+    id:            protocolo,
+    data:          new Date().toLocaleString('pt-BR'),
+    indicador:     g('f-indicador'),
+    telIndicador:  telIndicador,
+    passageiro:         g('f-passageiro'),
+    idade:         g('f-idade')  || '—',
+    turno:         g('f-turno')  || '—',
+    escola:        g('f-escola') || '—',
+    condicao:      g('f-cond')   || '—',
+    responsavel:   g('f-resp'),
+    whatsapp:      g('f-tel'),
+    bairro:        g('f-bairro') || '—',
+    tipo:          tipoLabel[tipoSel],
+    urgencia:      urgLabel[urgSel],
+    obs:           g('f-obs')    || '—',
+  };
+
+  // Salva localmente
+  const salvas = JSON.parse(localStorage.getItem('indicacoes_minas') || '[]');
+  salvas.push(indicacao);
+  localStorage.setItem('indicacoes_minas', JSON.stringify(salvas));
+
+  // ── Mensagem para a BRUNA (completa) ──
+  const msgBruna = encodeURIComponent(
+    '♿ *MINAS + ACESSÍVEL — Nova Indicação* ⭐\n\n'
+  + '📋 *Protocolo:* ' + indicacao.id + '\n'
+  + '📅 *Data/Hora:* ' + indicacao.data + '\n'
+  + '👤 *Indicado por:* ' + indicacao.indicador + ' · ' + g('f-tel-indicador') + '\n\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '👦 *DADOS DO PASSAGEIRO*\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '• Nome: *' + indicacao.passageiro + '*\n'
+  + '• Idade: ' + indicacao.idade + '\n'
+  + '• Condição: ' + indicacao.condicao + '\n'
+  + '• Instituição: ' + indicacao.escola + '\n'
+  + '• Turno: ' + indicacao.turno + '\n'
+  + '• Bairro: ' + indicacao.bairro + '\n\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '📞 *CONTATO DO RESPONSÁVEL*\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '• Responsável: *' + indicacao.responsavel + '*\n'
+  + '• WhatsApp: *' + indicacao.whatsapp + '*\n\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '📌 *DETALHES*\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '• Tipo de serviço: ' + indicacao.tipo + '\n'
+  + '• Urgência: ' + indicacao.urgencia + '\n'
+  + '• Obs: ' + indicacao.obs + '\n\n'
+  + '_Enviado pelo Programa de Indicação · Minas + Acessível_'
+  );
+
+  // ── Mensagem para o MOTORISTA (comprovante) ──
+  const msgMotorista = encodeURIComponent(
+    '✅ *Sua indicação foi enviada!* ⭐\n\n'
+  + '♿ *Minas + Acessível — Comprovante*\n\n'
+  + '📋 *Protocolo:* ' + indicacao.id + '\n'
+  + '📅 *Data/Hora:* ' + indicacao.data + '\n\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '👦 *PASSAGEIRO INDICADO*\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '• Nome: *' + indicacao.passageiro + '*\n'
+  + '• Responsável: ' + indicacao.responsavel + '\n'
+  + '• WhatsApp: ' + indicacao.whatsapp + '\n'
+  + '• Bairro: ' + indicacao.bairro + '\n\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '📌 *SERVIÇO*\n'
+  + '━━━━━━━━━━━━━━━━━━━\n'
+  + '• Tipo: ' + indicacao.tipo + '\n'
+  + '• Urgência: ' + indicacao.urgencia + '\n\n'
+  + '🙏 Obrigada pela indicação, *' + indicacao.indicador + '*!\n'
+  + 'Nossa equipe vai entrar em contato com a família em breve.\n\n'
+  + '_Minas + Acessível · Transporte Adaptado · BH_'
+  );
+
+  // Abre WhatsApp da Bruna, depois o do motorista
+  setTimeout(()=>{
+    // 1º — WhatsApp da Bruna
+    window.open('https://wa.me/' + WHATSAPP_NUMERO + '?text=' + msgBruna, '_blank');
+
+    // 2º — WhatsApp do motorista (300ms depois para não bloquear popup)
+    if(telIndicador.length >= 10){
+      const numMot = '55' + telIndicador;
+      setTimeout(()=>{
+        window.open('https://wa.me/' + numMot + '?text=' + msgMotorista, '_blank');
+      }, 300);
+    }
+
+    mostrarSucesso(indicacao);
+  }, 700);
+}
+
+// ── TELA DE SUCESSO ──
+function mostrarSucesso(ind){
+  document.getElementById('formArea').style.display = 'none';
+  const s = document.getElementById('success');
+  s.style.display = 'flex';
+
+  document.getElementById('success-resumo').innerHTML = `
+    <div class="sc-row"><span class="sc-key">Indicado por</span><span class="sc-val">${ind.indicador}</span></div>
+    <div class="sc-row"><span class="sc-key">Passageiro</span><span class="sc-val">${ind.passageiro}</span></div>
+    <div class="sc-row"><span class="sc-key">Responsável</span><span class="sc-val">${ind.responsavel}</span></div>
+    <div class="sc-row"><span class="sc-key">WhatsApp</span><span class="sc-val">${ind.whatsapp}</span></div>
+    <div class="sc-row"><span class="sc-key">Tipo</span><span class="sc-val">${ind.tipo}</span></div>
+    <div class="sc-row"><span class="sc-key">Urgência</span><span class="sc-val">${ind.urgencia}</span></div>
+    <div class="sc-row"><span class="sc-key">Protocolo</span><span class="sc-val" style="font-family:var(--mono);font-size:11px;">${ind.id}</span></div>
+  `;
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── NOVA INDICAÇÃO ──
+function novaIndicacao(){
+  ['f-indicador','f-tel-indicador','f-passageiro','f-resp','f-tel','f-escola','f-bairro','f-obs'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  document.getElementById('f-idade').value = '';
+  document.getElementById('f-turno').value = '';
+  document.getElementById('f-cond').value  = '';
+
+  // Reset tipo e urgência
+  document.querySelectorAll('.tipo-btn').forEach(b=>b.classList.remove('sel'));
+  document.querySelector('[data-tipo="regular"]').classList.add('sel');
+  tipoSel = 'regular';
+
+  document.querySelectorAll('.urg-btn').forEach(b=>b.classList.remove('sel','verde','amarelo','cinza'));
+  document.querySelector('[data-urg="agora"]').classList.add('sel','verde');
+  urgSel = 'agora';
+
+  document.getElementById('success').style.display = 'none';
+  document.getElementById('formArea').style.display = 'block';
+
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = false;
+  btn.innerHTML = '<span>📲 Enviar Indicação pelo WhatsApp</span>';
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── MÁSCARAS DE TELEFONE ──
+function mascaraTel(el){
+  el.addEventListener('input', function(){
+    let v = this.value.replace(/\D/g,'');
+    if(v.length > 11) v = v.slice(0,11);
+    if(v.length > 6)      this.value = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+    else if(v.length > 2) this.value = '(' + v.slice(0,2) + ') ' + v.slice(2);
+    else if(v.length > 0) this.value = '(' + v;
+  });
+}
+mascaraTel(document.getElementById('f-tel'));
+mascaraTel(document.getElementById('f-tel-indicador'));
+</script>
+</body>
+</html>
